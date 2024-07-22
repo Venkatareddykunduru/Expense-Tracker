@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const leaderboardDiv = document.getElementById('leaderboard');
     let editId = null;
     let currentPage = 1;
-    const limit = 2;
+    let limit;
 
     const token = localStorage.getItem('token');
     const ispremium = localStorage.getItem('ispremium');
@@ -22,6 +22,17 @@ document.addEventListener('DOMContentLoaded', function () {
         buyPremiumButton.style.display = 'none';
         showLeaderboardButton.style.display = 'block';
     }
+    limit=localStorage.getItem('limit') || 2;
+
+    const rowsLimitSelect = document.getElementById('rows-limit-select');
+    rowsLimitSelect.value=limit;
+    limit = parseInt(rowsLimitSelect.value);
+
+    rowsLimitSelect.addEventListener('change', function () {
+        limit = parseInt(this.value);
+        localStorage.setItem('limit',limit);
+        renderExpenses(1); // Re-render expenses with new limit starting from the first page
+    });
 
     document.getElementById('prev-page').addEventListener('click', () => {
         if (currentPage > 1) {
